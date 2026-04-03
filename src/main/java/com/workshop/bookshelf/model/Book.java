@@ -15,34 +15,28 @@ import lombok.Data;
 @Table(name = "books")
 @Data
 public class Book {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank 
-    @Column(nullable = false, length = 150)
+    @NotBlank
+    @Column(name="title", nullable = false, length = 150)
     private String title;
 
     @NotBlank
-    @Column(nullable = false, length = 100)
+    @Column(name="author", nullable = false, length = 100)
     private String author;
 
     @Min(1000)
     @Max(2099)
-    private int year;
-
-    @NotBlank
+    @Column(name="genre", nullable=false, length= 100)
     private String genre;
 
-    public Book() {}
+    @NotBlank
+    @Column(name="publication_year")
+    private Integer publicationYear;
 
-    public Book(String title, String author, int year, String genre){
-        this.title = title;
-        this.author = author;
-        this.year = year;
-        this.genre = genre;
-    }
 
 
 }
