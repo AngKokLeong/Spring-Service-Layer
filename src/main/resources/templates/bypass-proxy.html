@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>BookShelf - Bypass Proxy Example</title>
+    </head>
+
+    <body>
+        <h1>Bypass Proxy Example</h1>
+
+
+        <a th:href="@{/books}">Cancel</a>
+
+        <!--
+            th:action - the URL where the form send the POST request
+            th:object - binds the form to the "book" object in the Model
+            method=POST - define HTTP POST
+        -->
+
+        <form   
+            th:action="@{/loan/bypass-proxy}"
+            th:object="${book}"
+            method="post"
+        >
+            <button type="submit">Trigger Bypass Proxy</button>
+
+
+        </form>
+
+    </body>
+
+
+</html>
