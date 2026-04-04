@@ -28,15 +28,22 @@ public class Book {
     @Column(name="author", nullable = false, length = 100)
     private String author;
 
-    @Min(1000)
-    @Max(2099)
+    @NotBlank
     @Column(name="genre", nullable=false, length= 100)
     private String genre;
 
-    @NotBlank
+    @Min(1000)
+    @Max(2099)
     @Column(name="publication_year")
-    private Integer publicationYear;
+    private int publicationYear;
 
+    public Book(){}
 
+    public Book(String title, String author, String genre, int publicationYear){
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+        this.publicationYear = publicationYear;
+    }
 
 }

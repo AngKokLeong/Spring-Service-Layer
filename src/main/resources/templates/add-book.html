@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>BookShelf - Add Book</title>
+    </head>
+
+    <body>
+        <h1>Add a New Book</h1>
+
+
+        <a th:href="@{/books}">Cancel</a>
+
+        <!--
+            th:action - the URL where the form send the POST request
+            th:object - binds the form to the "book" object in the Model
+            method=POST - define HTTP POST
+        -->
+
+        <form   
+            th:action="@{/books/add}"
+            th:object="${book}"
+            method="post"
+        >
+            <div th:if="${#fields.hasAnyErrors()}">
+                <span>There are errors in the following:</span>
+                <!--https://www.thymeleaf.org/doc/tutorials/3.1/usingthymeleaf.html#iteration-basics -->
+                <ul>
+                   <li th:each="error : ${#fields.allErrors()}" th:text="${error}" ></li> 
+                </ul>
+
+            </div>
+
+            <div>
+                <label for="title">
+                    Title:
+                </label>
+
+                <!--
+                    th:field="*{title}" is shorthand for:
+                        id="title" name="title" th:value="${book.title}"
+
+                        The *{} syntax uses the th:object as the root.
+                -->
+                <input type="text" th:field="*{title}" required>
+                <!-- th:errors renders the constraint message when validation fails -->
+                <!-- th:if hides the span entirely when there are no errors -->
+                 <span th:if="${#fields.hasErrors('title')}"
+                        th:errors="*{title}"
+                        style="color:red; font-size:0.85em;"
+                 >
+                 </span>
+            </div>
+                
+            <div>
+                <label for="author">Author:</label>
+                <input type="text" th:field="*{author}" required>
+                <span th:if="${#fields.hasErrors('author')}"
+                        th:errors="*{author}"
+                        style="color:red; font-size:0.85em;"
+                 >
+                 </span>
+            </div>
+
+            <!-- https://www.baeldung.com/spring-thymeleaf-error-messages -->
+            <div>
+                <label for="year">Year:</label>
+                <input  type="number" th:field="*{publicationYear}" min="1000" max="2099" required />
+                <span th:if="${#fields.hasErrors('publicationYear')}"
+                        th:errors="*{year}"
+                        style="color:red; font-size:0.85em;"
+                 >
+                 </span>
+            </div>
+
+
+            <div>
+                <label for="genre">Genre:</label>
+                <select th:field="*{genre}">
+                    <option value="">--Choose genre--</option>
+                    <option value="Fiction">Fiction</option>
+                    <option value="Non-Fiction">Non-Fiction</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Science">Science</option>
+                </select>
+            </div>
+
+            <br />
+
+            <button type="submit">Save Book</button>
+
+
+        </form>
+
+    </body>
+
+
+</html>
