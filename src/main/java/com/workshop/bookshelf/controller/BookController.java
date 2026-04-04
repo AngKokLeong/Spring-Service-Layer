@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.workshop.bookshelf.model.Book;
@@ -35,8 +36,16 @@ public class BookController {
 
     //Step 2: Book List
     @GetMapping("/books")
-    public String listBooks(Model model){
+   
+    public String listBooks(Model model,  @RequestParam(name="genre", required = false) String genre){
         
+        if (genre != null){
+            List<Book> allBooksByGenre = bookService.findByGenre(genre);
+            model.addAttribute("books", allBooksByGenre);
+            
+            return "books";
+        }
+
         //1. Fetch data from the service layer
         List<Book> allBooks = bookService.findAll();
         
@@ -96,6 +105,6 @@ public class BookController {
         return "redirect:/books";
     }
 
-    
+
 
 }
