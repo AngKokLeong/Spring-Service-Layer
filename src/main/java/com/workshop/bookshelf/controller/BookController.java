@@ -1,5 +1,6 @@
 package com.workshop.bookshelf.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -105,6 +106,27 @@ public class BookController {
         return "redirect:/books";
     }
 
+    @GetMapping("/books/add-many-books")
+    public String showAddManyBooksForm(Model model){
+       
+        return "add-many-books";
+    }
 
+    @PostMapping("/books/add-many-books")
+    public String showAddManyBooksForm(@ModelAttribute Book book, Model model){
+       
+        ArrayList<Book> bookList = new ArrayList<Book>();
 
+        Book book1 = new Book("TEst", "ABC", "TEST THEME", 2005);
+        Book book2 = new Book("FISH", "DEF", "SCREW THEME", 2000);
+        Book book3 = new Book("YU", "GHI", "DEEP THEME", 2010);
+
+        bookList.add(book1);
+        bookList.add(book2);
+        bookList.add(book3);
+
+        bookService.saveAll(bookList);
+
+        return "redirect:/add-many-books";
+    }
 }
