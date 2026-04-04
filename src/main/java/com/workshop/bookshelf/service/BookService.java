@@ -33,7 +33,10 @@ public class BookService {
         return bookRepository.findById(id);
     }
 
-
+    @Transactional(readOnly = true)
+    public List<Book> findByGenre(String genre){
+        return bookRepository.findByGenre(genre);
+    }
 
     // Write Operation: Default @Transactional uses Progation.REQUIRED
     // A new transaction starts if none exists, existing one is joined
