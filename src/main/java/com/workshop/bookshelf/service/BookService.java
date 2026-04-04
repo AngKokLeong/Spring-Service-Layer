@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.workshop.bookshelf.model.Book;
@@ -50,5 +51,17 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void saveAll(List<Book> books){
+        for (int index=0; index < books.size(); index++){
+            bookRepository.save(books.get(index));
+            
+            if (index > 1){
+                // Spring Boot roll backa transaction when a RuntimeException occurs
+                throw new RuntimeException("Trigger rollback behaviour");
+            }
+        }
+    }
 
 }
