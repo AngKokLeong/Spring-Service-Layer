@@ -16,12 +16,14 @@ import com.workshop.bookshelf.repository.LoanRecordRepository;
 @Service
 public class LoanService {
     
+    private final AuditService auditService;
     private final LoanRecordRepository loanRecordRepository;
     private final BookRepository bookRepository;
     
-    public LoanService(LoanRecordRepository loanRecordRepository, BookRepository bookRepository){
+    public LoanService(LoanRecordRepository loanRecordRepository, BookRepository bookRepository, AuditService auditService){
         this.loanRecordRepository = loanRecordRepository;
         this.bookRepository = bookRepository;
+        this.auditService = auditService;
     }
 
 
@@ -46,9 +48,10 @@ public class LoanService {
         LoanRecord record = new LoanRecord(book, borrowerName);
         LoanRecord saved = loanRecordRepository.save(record);
 
-        // TODO: add an audit event
+  
         // Audit in a SEPARATE transaction so it is never rolled back
         // even if borrowBook itself fails later in the same call stack.
+        auditService.logAction("BORROW", bookId, borrowerName);
 
         return saved;
     }
@@ -69,8 +72,8 @@ public class LoanService {
 
         LoanRecord saved = loanRecordRepository.save(record);
 
-        // TODO: add an audit event
-
+        
+        auditService.logAction("RETURN", record.getBook().getId(), record.getBorrowerName());
 
         return saved;
 
