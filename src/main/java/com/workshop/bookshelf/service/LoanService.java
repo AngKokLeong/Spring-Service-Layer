@@ -19,11 +19,13 @@ public class LoanService {
     private final AuditService auditService;
     private final LoanRecordRepository loanRecordRepository;
     private final BookRepository bookRepository;
-    
-    public LoanService(LoanRecordRepository loanRecordRepository, BookRepository bookRepository, AuditService auditService){
+    private final LoanHelperService loanHelperService;
+
+    public LoanService(LoanRecordRepository loanRecordRepository, BookRepository bookRepository, AuditService auditService, LoanHelperService loanHelperService){
         this.loanRecordRepository = loanRecordRepository;
         this.bookRepository = bookRepository;
         this.auditService = auditService;
+        this.loanHelperService = loanHelperService;
     }
 
 
@@ -57,6 +59,11 @@ public class LoanService {
     }
 
     @Transactional
+    public void helper(){
+        auditService.logAction("TEST HELPER", Long.valueOf("233"), "LOANSERVICE_HELPER");
+    }
+
+    @Transactional
     public LoanRecord returnBook(Long loanId){
         LoanRecord record = loanRecordRepository.findById(loanId)
                                                 .orElseThrow(
@@ -76,7 +83,11 @@ public class LoanService {
         auditService.logAction("RETURN", record.getBook().getId(), record.getBorrowerName());
 
         return saved;
+    }
 
+    @Transactional
+    public void outer(){
+        loanHelperService.helper();
     }
 
 }
